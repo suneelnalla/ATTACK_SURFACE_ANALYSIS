@@ -6,7 +6,6 @@ from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich import box
 from colorama import Fore, init
-import argparse
 import threading
 import queue
 import time
@@ -97,16 +96,20 @@ def worker(email_queue, session):
         email_queue.task_done()
 
 def main():
-    parser = argparse.ArgumentParser(description='Argus - Advanced Data Leak Checker')
-    parser.add_argument('domain', help='Domain to check for data leaks')
-    parser.add_argument('--email', action='append', help='Specific email addresses to check (can be used multiple times)')
-    parser.add_argument('--threads', type=int, default=5, help='Number of concurrent threads (default: 5)')
-    args = parser.parse_args()
+    # Ask for domain input from the user
+    domain = input("Enter the domain to check for data leaks: ")
+    domain = clean_domain_input(domain)
 
-    domain = clean_domain_input(args.domain)
-
-    if args.email:
-        emails = args.email
+    # Ask if user wants to add specific emails
+    custom_emails = input("Do you want to add specific email addresses (yes/no)? ").strip().lower()
+    emails = []
+    
+    if custom_emails == 'yes':
+        while True:
+            email = input("Enter an email (or press enter to stop): ").strip()
+            if not email:
+                break
+            emails.append(email)
     else:
         emails = get_email_addresses(domain)
 
@@ -117,7 +120,8 @@ def main():
 
     # Start worker threads
     threads = []
-    for _ in range(args.threads):
+    num_threads = 5  # Default number of threads
+    for _ in range(num_threads):
         t = threading.Thread(target=worker, args=(email_queue, session))
         t.start()
         threads.append(t)
@@ -130,7 +134,7 @@ def main():
     email_queue.join()
 
     # Stop workers
-    for _ in range(args.threads):
+    for _ in range(num_threads):
         email_queue.put(None)
     for t in threads:
         t.join()
