@@ -94,6 +94,6 @@ def vulnerability_scanner(url, custom_headers=None):
     logging.info(f"Completed vulnerability scanning on {url}.")
     
     return vulnerabilities
-url = "http://192.168.181.128"
+url = "http://pornhat.one"
 scan_results = vulnerability_scanner(url)
 print(scan_results)
