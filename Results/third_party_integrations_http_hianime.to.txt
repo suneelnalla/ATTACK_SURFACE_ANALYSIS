@@ -1,0 +1,3 @@
+Integration: Cloudflare
+Details: Content Delivery Network (CDN)
+---

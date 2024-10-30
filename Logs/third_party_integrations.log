@@ -1,0 +1,3 @@
+2024-10-31 00:12:23,936 - INFO - Started third-party integrations detection for: hianime.to
+2024-10-31 00:12:29,260 - INFO - Results saved to d:\python_scripts\AUTOMATED_PENTESTING\modules\..\Results\third_party_integrations_http_hianime.to.txt
+2024-10-31 00:12:29,262 - INFO - Third-party integrations check completed.
